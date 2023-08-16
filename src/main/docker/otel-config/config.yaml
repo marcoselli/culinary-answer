@@ -1,0 +1,35 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+
+exporters:
+  logging:
+    verbosity: detailed
+
+#  jaeger:
+#    endpoint: jaeger-instance:14250
+#    tls:
+#      insecure: true
+
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    send_timestamps: true
+    resource_to_telemetry_conversion:
+      enabled: true
+    namespace: otel-collector
+
+service:
+  pipelines:
+#    traces:
+#      receivers: [ otlp ]
+#      processors: [ ]
+#      exporters: [ jaeger ]
+    metrics:
+      receivers: [ otlp ]
+      processors: [ ]
+      exporters: [ prometheus]
+#    logs:
+#      receivers: [otlp]
+#      processors: [ ]
+#      exporters: [otlphttp, logging]

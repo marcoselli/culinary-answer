@@ -1,7 +1,9 @@
 plugins {
     id 'java'
     id 'io.quarkus'
+    id("io.freefair.lombok") version "8.1.0"
 }
+
 
 repositories {
     mavenCentral()
@@ -10,16 +12,35 @@ repositories {
 
 dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
-    implementation 'io.quarkus:quarkus-resteasy-reactive-jackson'
-    implementation 'io.quarkus:quarkus-resteasy-reactive'
-    implementation 'io.quarkus:quarkus-opentelemetry'
-    implementation 'io.quarkus:quarkus-config-yaml'
-    implementation 'io.quarkus:quarkus-oidc'
-    implementation 'io.quarkus:quarkus-keycloak-admin-client-reactive'
-    implementation 'io.quarkus:quarkus-smallrye-context-propagation'
-    implementation 'io.quarkus:quarkus-arc'
-    testImplementation 'io.quarkus:quarkus-junit5'
-    testImplementation 'io.rest-assured:rest-assured'
+
+    //OpenAI
+    implementation("com.theokanning.openai-gpt3-java:service:0.15.0")
+
+    //Monitoring and Observability
+    implementation("io.quarkus:quarkus-opentelemetry")
+    implementation("io.opentelemetry:opentelemetry-extension-trace-propagators")
+    implementation("io.quarkiverse.micrometer.registry:quarkus-micrometer-registry-otlp:3.1.2")
+
+    //Security
+    implementation ("io.quarkus:quarkus-oidc")
+    implementation ("io.quarkus:quarkus-keycloak-admin-client-reactive")
+
+    //Documentation
+    implementation("io.quarkus:quarkus-smallrye-openapi")
+
+
+    implementation("io.quarkus:quarkus-hibernate-validator")
+    implementation("io.quarkus:quarkus-resteasy-reactive-jackson")
+    implementation("io.quarkus:quarkus-resteasy-reactive")
+    implementation("io.quarkus:quarkus-config-yaml")
+    implementation("io.quarkus:quarkus-smallrye-context-propagation")
+    implementation("io.quarkus:quarkus-arc")
+
+    implementation("org.mapstruct:mapstruct:1.5.5.Final")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
+
+    testImplementation("io.quarkus:quarkus-junit5")
+    testImplementation("io.rest-assured:rest-assured")
 }
 
 group 'br.dev.marco'

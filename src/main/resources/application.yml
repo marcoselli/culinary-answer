@@ -1,2 +1,30 @@
-greeting:
-  message: "hello"
+quarkus:
+  application:
+    name: culinary-answer
+
+  devservices:
+    enabled: false
+
+#  micrometer:
+#    export:
+#      otlp:
+#        publish: true
+#        default-registry: true
+#        url: ${OTEL_COLLECTOR_URL:http://localhost}:4318/v1/metrics
+#
+#  oidc:
+#    auth-server-url: ${KEYCLOAK_URL:http://localhost}:8180/realms/quarkus
+#    client-id: ${KEYCLOAK_CLIENT_ID:backend-service}
+#    secret: ${KEYCLOAK_SECRET:secret}
+
+  log:
+    console:
+      format: "%d{HH:mm:ss} %-5p traceId=%X{traceId}, parentId=%X{parentId}, spanId=%X{spanId}, sampled=%X{sampled} [%c{2.}] (%t) %s%e%n"
+    category:
+      "br.dev.marco":
+        level: INFO
+
+#Injetar TOKEN através do SecretsManager
+secret:
+  API_TOKEN: "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"
+

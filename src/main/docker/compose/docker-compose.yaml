@@ -1,0 +1,38 @@
+version: '3.3'
+
+services:
+  keycloak-instance:
+    image: keycloak/keycloak:latest
+    command: ["start-dev"]
+    volumes:
+      - ../keycloak-config/keycloak-keystore.jks:/etc/keycloak-keystore.jks
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - 8180:8080
+
+  jaeger-instance:
+    image: jaegertracing/all-in-one
+    ports:
+      - 4317:4317 # OTLP gRPC receiver
+      - 16686:16686 # UI
+
+  prometheus-instance:
+    image: prom/prometheus:latest
+    volumes:
+      - ../prometheus-config/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    command: [ "--config=/etc/otel-collector-config.yaml" ]
+    volumes:
+      - ../otel-config/config.yaml:/etc/otel-collector-config.yaml:Z
+    ports:
+      - 8899:8899 # Prometheus exporter metrics
+      - 4318:4318 # OTLP http receiver
+    depends_on:
+      - prometheus-instance
+      - jaeger-instance
