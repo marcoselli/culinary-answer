@@ -5,10 +5,12 @@ import lombok.Getter;
 @Getter
 public class OpenAiException extends Exception {
     private String errorMessage;
+
+    private String rootCause;
     public OpenAiException(Throwable throwable) {
         super(throwable);
-        if(throwable instanceof RuntimeException)
-            this.errorMessage = "OpenAI service connection timed out";
+        this.rootCause = throwable.getClass().getSimpleName();
+        if(throwable instanceof RuntimeException) this.errorMessage = "OpenAI service connection timed out";
         else this.errorMessage = "An unexpected error occurred with openai services";
     }
 }

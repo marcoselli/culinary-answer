@@ -4,6 +4,7 @@ import br.dev.marco.config.OpenAIConfig;
 import br.dev.marco.domain.CulinaryQuestion;
 import br.dev.marco.enums.QuestionType;
 import br.dev.marco.usecase.exceptions.OpenAiException;
+import br.dev.marco.usecase.exceptions.UnsupportedQuestionException;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
 import io.smallrye.mutiny.Uni;
@@ -37,7 +38,7 @@ public class MessageGenerator {
                 .onFailure()
                 .transform(OpenAiException::new)
                 .flatMap(answer -> answer.contains(QuestionType.UNSUPPORTED_QUESTION.name()) ?
-                        Uni.createFrom().failure(new Exception(QuestionType.UNSUPPORTED_QUESTION.getDescription()))
+                        Uni.createFrom().failure(new UnsupportedQuestionException())
                         : Uni.createFrom().item(answer)
                 );
     }
