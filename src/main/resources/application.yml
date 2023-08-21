@@ -2,20 +2,24 @@ quarkus:
   application:
     name: culinary-answer
 
+
   devservices:
     enabled: false
 
-#  micrometer:
-#    export:
-#      otlp:
-#        publish: true
-#        default-registry: true
-#        url: ${OTEL_COLLECTOR_URL:http://localhost}:4318/v1/metrics
-#
-#  oidc:
-#    auth-server-url: ${KEYCLOAK_URL:http://localhost}:8180/realms/quarkus
-#    client-id: ${KEYCLOAK_CLIENT_ID:backend-service}
-#    secret: ${KEYCLOAK_SECRET:secret}
+  micrometer:
+    export:
+      otlp:
+        publish: true
+        default-registry: true
+        url: ${OTEL_COLLECTOR_URL:http://localhost}:4318/v1/metrics
+
+  oidc:
+    auth-server-url: ${KEYCLOAK_URL:http://localhost}:8180/realms/culinary-answer
+    client-id: ${KEYCLOAK_CLIENT_ID:backend-service}
+    secret: ${KEYCLOAK_SECRET:secret}
+  keycloak:
+    admin-client:
+      server-url: ${KEYCLOAK_URL:http://localhost}:8180
 
   log:
     console:
@@ -26,5 +30,5 @@ quarkus:
 
 #Injetar TOKEN através do SecretsManager
 secret:
-  API_TOKEN: "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"
+  API_TOKEN: "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"
 

@@ -22,6 +22,8 @@ public class MessageGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageGenerator.class);
     @Inject
     OpenAIConfig openAIConfig;
+
+
     private final String MODEL_TYPE = "text-davinci-003";
 
     public Uni<String> execute(CulinaryQuestion culinaryQuestion) {
@@ -34,12 +36,18 @@ public class MessageGenerator {
                 .maxTokens(2048)
                 .build();
         return Uni.createFrom().item(aiService.createCompletion(completionRequest))
+                .invoke(openAiResponse ->  LOGGER.info("Answer generated successfully"))
                 .map(openAiResponse -> openAiResponse.getChoices().get(0).getText())
                 .onFailure()
-                .transform(OpenAiException::new)
+                .transform(err -> {
+                    LOGGER.error("Error generating answer. Fail with: {}", err);
+                    return new OpenAiException(err);
+                })
                 .flatMap(answer -> answer.contains(QuestionType.UNSUPPORTED_QUESTION.name()) ?
                         Uni.createFrom().failure(new UnsupportedQuestionException())
                         : Uni.createFrom().item(answer)
-                );
+                )
+                .onFailure()
+                .invoke(() -> LOGGER.error("Error generating answer. The question does not refer to culinary topics"));
     }
 }

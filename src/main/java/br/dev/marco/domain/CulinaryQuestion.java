@@ -1,9 +1,13 @@
 package br.dev.marco.domain;
 
 import br.dev.marco.enums.QuestionType;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@NotNull
+@Builder
 public class CulinaryQuestion {
     private String message;
     private Double randomness;
