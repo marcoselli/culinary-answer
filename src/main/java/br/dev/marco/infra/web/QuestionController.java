@@ -4,11 +4,12 @@ package br.dev.marco.infra.web;
 import br.dev.marco.infra.web.request.QuestionRequest;
 import br.dev.marco.infra.web.response.QuestionResponse;
 import br.dev.marco.mapper.CulinaryQuestionMapper;
-import br.dev.marco.usecase.AnswerGenerator;
+import br.dev.marco.usecase.impl.AnswerGenerator;
 import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
@@ -25,10 +26,15 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class QuestionController {
+    private final AnswerGenerator answerGenerator;
+    private final CulinaryQuestionMapper culinaryQuestionMapper;
+
     @Inject
-    AnswerGenerator answerGenerator;
-    @Inject
-    CulinaryQuestionMapper culinaryQuestionMapper;
+    public QuestionController(@Named("answerGenerator") AnswerGenerator answerGenerator,
+                              CulinaryQuestionMapper culinaryQuestionMapper) {
+        this.answerGenerator = answerGenerator;
+        this.culinaryQuestionMapper = culinaryQuestionMapper;
+    }
 
     @POST
     @Authenticated

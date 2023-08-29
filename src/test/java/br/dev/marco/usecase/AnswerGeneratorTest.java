@@ -2,6 +2,7 @@ package br.dev.marco.usecase;
 
 import br.dev.marco.config.OpenAIConfig;
 import br.dev.marco.domain.CulinaryQuestion;
+import br.dev.marco.usecase.impl.AnswerGenerator;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

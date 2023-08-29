@@ -1,5 +1,6 @@
 package br.dev.marco.handler;
 
+import br.dev.marco.infra.security.exceptions.SecurityException;
 import br.dev.marco.usecase.exceptions.OpenAiException;
 import br.dev.marco.usecase.exceptions.UnsupportedQuestionException;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -23,6 +24,17 @@ public class ExceptionHandler {
         var errorMessage = ErrorMessage.builder()
                 .errorType(exception.getClass().getSimpleName())
                 .description(exception.getErrorMessage())
+                .build();
+        return Response.status(HttpResponseStatus.BAD_REQUEST.code())
+                .entity(errorMessage)
+                .build();
+    }
+
+    @ServerExceptionMapper
+    protected Response toSecurityExceptionResponse(SecurityException exception) {
+        var errorMessage = ErrorMessage.builder()
+                .errorType(exception.getClass().getSimpleName())
+                .description(exception.getMessage())
                 .build();
         return Response.status(HttpResponseStatus.BAD_REQUEST.code())
                 .entity(errorMessage)

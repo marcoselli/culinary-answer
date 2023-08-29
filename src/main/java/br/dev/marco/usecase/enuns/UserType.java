@@ -1,8 +1,8 @@
 package br.dev.marco.usecase.enuns;
 
 public enum UserType {
-    FREE("free_user"),
-    MEMBER("member_user");
+    FREE("simple-user"),
+    MEMBER("member-user");
 
     private String roleName;
 

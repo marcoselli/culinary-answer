@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreateUserRequest(
         @NotNull @NotEmpty
-        @Min(4) @Max(16)
         String username,
         @NotNull @NotEmpty
         String password

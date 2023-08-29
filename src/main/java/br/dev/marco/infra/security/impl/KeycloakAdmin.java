@@ -2,6 +2,7 @@ package br.dev.marco.infra.security.impl;
 
 import br.dev.marco.infra.security.SecurityInfra;
 import br.dev.marco.infra.security.exceptions.SecurityException;
+import br.dev.marco.infra.security.exceptions.model.KeycloakErrorMessage;
 import br.dev.marco.infra.security.request.UserInfra;
 import br.dev.marco.mapper.UserRepresentationMapper;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -42,7 +43,7 @@ public class KeycloakAdmin implements SecurityInfra {
                         return Uni.createFrom().voidItem();
                     }
                     LOGGER.info("Failed to create user: {}", userInfra.getUsername());
-                    return Uni.createFrom().failure(new SecurityException(keycloakResponse.getEntity().toString()));
+                    return Uni.createFrom().failure(new SecurityException(keycloakResponse.readEntity(KeycloakErrorMessage.class)));
                 })
                 .onFailure()
                 .invoke(err -> LOGGER.error("An unexpected error occurred while creating the user: {}. Fail with: {}", userInfra.getUsername(), err));

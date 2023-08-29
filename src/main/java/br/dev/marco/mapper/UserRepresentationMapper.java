@@ -14,7 +14,7 @@ public interface UserRepresentationMapper {
 
     @Mapping(target = "credentials", source = "userInfra", qualifiedByName = "credentialsMapper")
     @Mapping(target = "groups", source = "userInfra",qualifiedByName = "realmRolesMapper")
-    @Mapping(target = "enabled", source = "userInfra", constant = "true")
+    @Mapping(target = "enabled", constant = "true")
     UserRepresentation from(UserInfra userInfra);
 
     @Named(value = "credentialsMapper")
