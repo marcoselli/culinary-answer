@@ -17,12 +17,11 @@ import java.time.Duration;
 import java.util.Objects;
 
 @ApplicationScoped
-public class MessageGenerator {
+public class AnswerGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageGenerator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AnswerGenerator.class);
     @Inject
     OpenAIConfig openAIConfig;
-
 
     private final String MODEL_TYPE = "text-davinci-003";
 
@@ -50,4 +49,6 @@ public class MessageGenerator {
                 .onFailure()
                 .invoke(() -> LOGGER.error("Error generating answer. The question does not refer to culinary topics"));
     }
+
+
 }

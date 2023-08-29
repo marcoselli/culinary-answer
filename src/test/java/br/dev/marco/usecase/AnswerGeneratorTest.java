@@ -2,10 +2,7 @@ package br.dev.marco.usecase;
 
 import br.dev.marco.config.OpenAIConfig;
 import br.dev.marco.domain.CulinaryQuestion;
-import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
-import io.vertx.ext.web.handler.TimeoutHandler;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,13 +12,13 @@ import org.slf4j.Logger;
 
 import static org.mockito.Mockito.*;
 
-class MessageGeneratorTest {
+class AnswerGeneratorTest {
     @Mock
     Logger LOGGER;
     @Mock
     OpenAIConfig openAIConfig;
     @InjectMocks
-    MessageGenerator messageGenerator;
+    AnswerGenerator answerGenerator;
 
     @BeforeEach
     void setUp() {
@@ -34,7 +31,7 @@ class MessageGeneratorTest {
         CulinaryQuestion abc = CulinaryQuestion.builder()
                 .message("abc")
                 .build();
-        messageGenerator.execute(abc)
+        answerGenerator.execute(abc)
                 .subscribe()
                 .withSubscriber(UniAssertSubscriber.create())
                 .assertFailed();

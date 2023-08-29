@@ -30,8 +30,8 @@ dependencies {
     implementation("io.quarkus:quarkus-smallrye-openapi")
 
     //AWS
-    implementation("io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced:2.5.0")
-    implementation("software.amazon.awssdk:netty-nio-client")
+//    implementation("io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced:2.5.0")
+//    implementation("software.amazon.awssdk:netty-nio-client")
 
 
     implementation("io.quarkus:quarkus-hibernate-validator")
