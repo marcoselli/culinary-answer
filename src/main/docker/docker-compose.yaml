@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: pdb
+  keycloak:
+    image: keycloak/keycloak:latest
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/pdb
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
+    ports:
+     - 9090:8080
+    command:
+      start-dev

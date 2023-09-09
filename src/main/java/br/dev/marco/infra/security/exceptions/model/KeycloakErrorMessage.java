@@ -2,7 +2,6 @@ package br.dev.marco.infra.security.exceptions.model;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 @Data

@@ -1,6 +1,6 @@
 package br.dev.marco.infra.web;
 
-import br.dev.marco.domain.User;
+import br.dev.marco.domain.entity.User;
 import br.dev.marco.domain.exception.PasswordException;
 import br.dev.marco.domain.exception.UsernameException;
 import br.dev.marco.infra.web.request.CreateUserRequest;

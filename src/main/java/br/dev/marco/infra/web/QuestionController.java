@@ -1,10 +1,12 @@
 package br.dev.marco.infra.web;
 
 
+import br.dev.marco.domain.exception.MessageException;
+import br.dev.marco.domain.exception.RandomnessException;
 import br.dev.marco.infra.web.request.QuestionRequest;
 import br.dev.marco.infra.web.response.QuestionResponse;
-import br.dev.marco.mapper.CulinaryQuestionMapper;
-import br.dev.marco.usecase.impl.AnswerGenerator;
+import br.dev.marco.mapper.QuestionAdapter;
+import br.dev.marco.usecase.impl.GenerateAnswer;
 import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -20,20 +22,23 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
+import java.rmi.NoSuchObjectException;
+
 
 @ApplicationScoped
 @Path("/v1/question")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class QuestionController {
-    private final AnswerGenerator answerGenerator;
-    private final CulinaryQuestionMapper culinaryQuestionMapper;
+
+    private final GenerateAnswer generateAnswer;
+    private final QuestionAdapter questionAdapter;
 
     @Inject
-    public QuestionController(@Named("answerGenerator") AnswerGenerator answerGenerator,
-                              CulinaryQuestionMapper culinaryQuestionMapper) {
-        this.answerGenerator = answerGenerator;
-        this.culinaryQuestionMapper = culinaryQuestionMapper;
+    public QuestionController(@Named("answerGenerator") GenerateAnswer generateAnswer,
+                              QuestionAdapter questionAdapter) {
+        this.generateAnswer = generateAnswer;
+        this.questionAdapter = questionAdapter;
     }
 
     @POST
@@ -47,8 +52,9 @@ public class QuestionController {
     @APIResponse(responseCode = "400", description = "Bad request")
     @APIResponse(responseCode = "408", description = "Connection timed out")
     @APIResponse(responseCode = "500", description = "Some unexpected error occurred")
-    public Uni<Response> ask(@NotNull @Valid QuestionRequest questionRequest) {
-        return answerGenerator.execute(culinaryQuestionMapper.from(questionRequest))
+    public Uni<Response> ask(@NotNull @Valid QuestionRequest questionRequest)
+            throws MessageException, RandomnessException, NoSuchObjectException, NoSuchFieldException {
+        return generateAnswer.execute(questionAdapter.from(questionRequest))
                 .map(answer -> QuestionResponse.builder().message(answer).build())
                 .map(questionResponse -> Response.ok(questionResponse).build());
     }

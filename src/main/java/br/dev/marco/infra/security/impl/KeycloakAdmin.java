@@ -34,15 +34,15 @@ public class KeycloakAdmin implements SecurityInfra {
 
     @Override
     public Uni<Void> createUser(UserInfra userInfra) {
-        LOGGER.info("Starting Keycloak user creation. Username: {}", userInfra.getUsername());
+        LOGGER.info(" Username: {} - Starting Keycloak user creation.", userInfra.getUsername());
         return Uni.createFrom().item(keycloakInstance())
                 .map(realm -> realm.users().create(userRepresentationMapper.from(userInfra)))
                 .flatMap(keycloakResponse -> {
                     if(keycloakResponse.getStatus() == HttpResponseStatus.CREATED.code()){
-                        LOGGER.info("User created successfully. Username: {}", userInfra.getUsername());
+                        LOGGER.info("Username: {} - Keycloak user created successfully. ", userInfra.getUsername());
                         return Uni.createFrom().voidItem();
                     }
-                    LOGGER.info("Failed to create user: {}", userInfra.getUsername());
+                    LOGGER.info(" Username: {} - Failed to create keycloak user.", userInfra.getUsername());
                     return Uni.createFrom().failure(new SecurityException(keycloakResponse.readEntity(KeycloakErrorMessage.class)));
                 })
                 .onFailure()

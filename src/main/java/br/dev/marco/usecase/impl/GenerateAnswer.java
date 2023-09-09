@@ -1,8 +1,9 @@
 package br.dev.marco.usecase.impl;
 
 import br.dev.marco.config.OpenAIConfig;
-import br.dev.marco.domain.CulinaryQuestion;
+import br.dev.marco.domain.entity.Question;
 import br.dev.marco.enums.QuestionType;
+import br.dev.marco.mapper.CompletionRequestAdapter;
 import br.dev.marco.usecase.Command;
 import br.dev.marco.usecase.exceptions.OpenAiException;
 import br.dev.marco.usecase.exceptions.UnsupportedQuestionException;
@@ -15,30 +16,30 @@ import jakarta.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.rmi.NoSuchObjectException;
 import java.time.Duration;
-import java.util.Objects;
 
 @ApplicationScoped
 @Named("answerGenerator")
-public class AnswerGenerator implements Command<CulinaryQuestion,String> {
+public class GenerateAnswer implements Command<Question,String> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AnswerGenerator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenerateAnswer.class);
     @Inject
     OpenAIConfig openAIConfig;
+
+    @Inject
+    CompletionRequestAdapter completionRequestAdapter;
 
     private final String MODEL_TYPE = "text-davinci-003";
 
     @Override
-    public Uni<String> execute(CulinaryQuestion culinaryQuestion) {
+    public Uni<String> execute(Question question) throws NoSuchObjectException, NoSuchFieldException {
         LOGGER.info("Generating response in OpenAI Service");
         OpenAiService aiService = new OpenAiService(openAIConfig.apiToken(), Duration.ofSeconds(20));
-        CompletionRequest completionRequest = CompletionRequest.builder()
-                .prompt(culinaryQuestion.promptMessage())
-                .model(MODEL_TYPE)
-                .temperature(Objects.nonNull(culinaryQuestion.getRandomness()) ? culinaryQuestion.getRandomness() : 0)
-                .maxTokens(2048)
-                .build();
-        return Uni.createFrom().item(aiService.createCompletion(completionRequest))
+
+        return Uni.createFrom().item(
+                    aiService.createCompletion(completionRequestAdapter.from(question, MODEL_TYPE, 2048))
+                )
                 .invoke(openAiResponse ->  LOGGER.info("Answer generated successfully"))
                 .map(openAiResponse -> openAiResponse.getChoices().get(0).getText())
                 .onFailure()

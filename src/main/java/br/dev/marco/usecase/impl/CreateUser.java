@@ -1,6 +1,6 @@
 package br.dev.marco.usecase.impl;
 
-import br.dev.marco.domain.User;
+import br.dev.marco.domain.entity.User;
 import br.dev.marco.infra.security.SecurityInfra;
 import br.dev.marco.mapper.UserInfraAdapter;
 import br.dev.marco.usecase.Command;

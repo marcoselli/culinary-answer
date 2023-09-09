@@ -5,7 +5,6 @@ import io.smallrye.config.WithName;
 
 @ConfigMapping(prefix = "secret", namingStrategy = ConfigMapping.NamingStrategy.VERBATIM)
 public interface OpenAIConfig {
-
     @WithName("API_TOKEN")
     String apiToken();
 }

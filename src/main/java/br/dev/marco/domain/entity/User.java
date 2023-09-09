@@ -1,4 +1,4 @@
-package br.dev.marco.domain;
+package br.dev.marco.domain.entity;
 
 import br.dev.marco.domain.exception.PasswordException;
 import br.dev.marco.domain.exception.UsernameException;
@@ -15,6 +15,16 @@ public class User {
         assignRole(userType);
     }
 
+    public void changePassword(String password) throws PasswordException {
+        this.password = new Password(password);
+    }
+
+    private void assignRole(String userType) throws UserCreationException {
+        if(userType.equals(UserType.FREE.getRoleName())) this.role = UserType.FREE.getRoleName();
+        else if (userType.equals(UserType.MEMBER.getRoleName())) this.role = UserType.MEMBER.getRoleName();
+        else throw new UserCreationException("Invalid user type");
+    }
+
     public Username getUsername() {
         return username;
     }
@@ -25,16 +35,6 @@ public class User {
 
     public String getRole() {
         return role;
-    }
-
-    public void changePassword(String password) throws PasswordException {
-        this.password = new Password(password);
-    }
-
-    private void assignRole(String userType) throws UserCreationException {
-        if(userType.equals(UserType.FREE.getRoleName())) this.role = UserType.FREE.getRoleName();
-        else if (userType.equals(UserType.MEMBER.getRoleName())) this.role = UserType.MEMBER.getRoleName();
-        else throw new UserCreationException("Invalid user type");
     }
 
 //    public void assignFreeUser() {

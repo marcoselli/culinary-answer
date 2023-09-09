@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserRepresentationMapper {
 
     @Mapping(target = "credentials", source = "userInfra", qualifiedByName = "credentialsMapper")
-    @Mapping(target = "groups", source = "userInfra",qualifiedByName = "realmRolesMapper")
+    @Mapping(target = "groups", source = "userInfra", qualifiedByName = "realmRolesMapper")
     @Mapping(target = "enabled", constant = "true")
     UserRepresentation from(UserInfra userInfra);
 

@@ -1,4 +1,4 @@
-package br.dev.marco.domain;
+package br.dev.marco.domain.entity;
 
 import br.dev.marco.domain.exception.UsernameException;
 
