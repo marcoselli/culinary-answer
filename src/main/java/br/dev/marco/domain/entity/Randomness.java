@@ -13,7 +13,10 @@ public class Randomness {
     }
 
     private void validate(Double randomness) throws RandomnessException {
-        if(randomness < 0 || randomness > 1) throw new RandomnessException("The randomness value must be between 0 and 1");
+        if (Objects.nonNull(randomness)) {
+            if (randomness < 0 || randomness > 1)
+                throw new RandomnessException("The randomness value must be between 0 and 1");
+        }
     }
 
     public Double getValue() {

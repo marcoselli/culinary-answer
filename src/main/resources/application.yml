@@ -27,6 +27,19 @@ quarkus:
       "br.dev.marco":
         level: INFO
 
+#  jacoco:
+#    excludes:
+#      - "**/domain/exception/**"
+#      - "br.dev.marco.handler/*"
+#      - "**/infra/repository/entity/*"
+#      - "**/infra/security/exceptions/*"
+#      - "**/infra/security/request/*"
+#      - "**/infra/web/request/*"
+#      - "**/infra/web/response/*"
+#      - "**/mapper/*Impl.class"
+#      - "**/usecase/enuns/*"
+#      - "**/usecase/exceptions/*"
+
 #Injetar TOKEN através do SecretsManager
 secret:
   API_TOKEN: "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"

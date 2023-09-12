@@ -5,8 +5,11 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
       POSTGRES_DB: pdb
+    ports:
+      - 5432:5432
   keycloak:
     image: keycloak/keycloak:latest
+    command: ['start-dev']
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -16,5 +19,5 @@ services:
       KC_DB_PASSWORD: admin
     ports:
      - 9090:8080
-    command:
-      start-dev
+    depends_on:
+      - postgres

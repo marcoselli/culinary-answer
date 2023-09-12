@@ -16,6 +16,14 @@ public class RandomnessTest {
     }
 
     @Test
+    @DisplayName("Should instantiate value object Randomness correctly when null")
+    void instantiateNullRandomness() throws RandomnessException {
+        var randomness = new Randomness(null);
+        Assertions.assertNotNull(randomness);
+        Assertions.assertEquals(0, randomness.getValue());
+    }
+
+    @Test
     @DisplayName("Should throw an exception when trying to instantiate Randomness lower than 0")
     void shouldThrowErrorWhenRandomnessLowerThanZero() {
         Assertions.assertThrows(RandomnessException.class, () -> new Randomness(-0.5));

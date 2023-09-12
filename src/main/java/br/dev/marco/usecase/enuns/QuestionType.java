@@ -1,4 +1,4 @@
-package br.dev.marco.enums;
+package br.dev.marco.usecase.enuns;
 
 import lombok.Getter;
 

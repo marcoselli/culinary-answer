@@ -2,10 +2,7 @@ package br.dev.marco.domain.entity;
 
 import br.dev.marco.domain.exception.MessageException;
 import br.dev.marco.domain.exception.RandomnessException;
-import br.dev.marco.enums.QuestionType;
-import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Data;
+import br.dev.marco.usecase.enuns.QuestionType;
 
 public class Question {
     private Message message;

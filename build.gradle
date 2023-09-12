@@ -45,7 +45,7 @@ dependencies {
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
     testImplementation("io.quarkus:quarkus-junit5")
-    testImplementation("io.quarkus:quarkus-junit5-mockito")
+    testImplementation("io.quarkus:quarkus-junit5-mockito:3.3.2")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("io.quarkus:quarkus-jacoco")
 }
@@ -65,7 +65,10 @@ test {
         excludeClassLoaders = ["*QuarkusClassLoader"]
         destinationFile = layout.buildDirectory.file("jacoco-quarkus.exec").get().asFile
     }
-    jacocoTestReport.enabled = true
+}
+
+jacocoTestReport {
+    enabled = true
 }
 
 compileJava {

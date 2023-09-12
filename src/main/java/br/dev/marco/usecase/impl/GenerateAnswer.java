@@ -2,12 +2,11 @@ package br.dev.marco.usecase.impl;
 
 import br.dev.marco.config.OpenAIConfig;
 import br.dev.marco.domain.entity.Question;
-import br.dev.marco.enums.QuestionType;
+import br.dev.marco.usecase.enuns.QuestionType;
 import br.dev.marco.mapper.CompletionRequestAdapter;
 import br.dev.marco.usecase.Command;
 import br.dev.marco.usecase.exceptions.OpenAiException;
 import br.dev.marco.usecase.exceptions.UnsupportedQuestionException;
-import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
