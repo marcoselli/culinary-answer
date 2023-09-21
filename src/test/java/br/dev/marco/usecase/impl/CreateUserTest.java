@@ -3,19 +3,18 @@ package br.dev.marco.usecase.impl;
 import br.dev.marco.domain.entity.User;
 import br.dev.marco.domain.exception.PasswordException;
 import br.dev.marco.domain.exception.UsernameException;
-import br.dev.marco.infra.security.SecurityInfra;
-import br.dev.marco.infra.security.request.UserInfra;
+import br.dev.marco.domain.usecase.impl.CreateUser;
+import br.dev.marco.infra.security.sso.SecurityInfra;
+import br.dev.marco.infra.security.sso.request.UserInfra;
 import br.dev.marco.mapper.UserInfraAdapter;
-import br.dev.marco.usecase.exceptions.UserCreationException;
+import br.dev.marco.domain.usecase.exceptions.UserCreationException;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
 
 import static org.mockito.Mockito.*;
 

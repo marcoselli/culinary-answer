@@ -3,10 +3,11 @@ package br.dev.marco.infra.web;
 
 import br.dev.marco.domain.exception.MessageException;
 import br.dev.marco.domain.exception.RandomnessException;
+import br.dev.marco.infra.security.vault.exceptions.CredentialException;
 import br.dev.marco.infra.web.request.QuestionRequest;
 import br.dev.marco.infra.web.response.QuestionResponse;
 import br.dev.marco.mapper.QuestionAdapter;
-import br.dev.marco.usecase.impl.GenerateAnswer;
+import br.dev.marco.domain.usecase.impl.GenerateAnswer;
 import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -53,10 +54,9 @@ public class QuestionController {
     @APIResponse(responseCode = "408", description = "Connection timed out")
     @APIResponse(responseCode = "500", description = "Some unexpected error occurred")
     public Uni<Response> ask(@NotNull @Valid QuestionRequest questionRequest)
-            throws MessageException, RandomnessException, NoSuchObjectException, NoSuchFieldException {
+            throws MessageException, RandomnessException, NoSuchObjectException, NoSuchFieldException, CredentialException {
         return generateAnswer.execute(questionAdapter.from(questionRequest))
                 .map(answer -> QuestionResponse.builder().message(answer).build())
                 .map(questionResponse -> Response.ok(questionResponse).build());
     }
-
 }

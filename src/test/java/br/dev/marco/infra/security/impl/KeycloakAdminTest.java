@@ -1,8 +1,9 @@
 package br.dev.marco.infra.security.impl;
 
-import br.dev.marco.infra.security.exceptions.SecurityException;
-import br.dev.marco.infra.security.exceptions.model.KeycloakErrorMessage;
-import br.dev.marco.infra.security.request.UserInfra;
+import br.dev.marco.infra.security.sso.exceptions.SecurityException;
+import br.dev.marco.infra.security.sso.exceptions.model.KeycloakErrorMessage;
+import br.dev.marco.infra.security.sso.request.UserInfra;
+import br.dev.marco.infra.security.sso.impl.KeycloakAdmin;
 import br.dev.marco.mapper.UserRepresentationMapper;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import jakarta.ws.rs.core.Response;
@@ -43,6 +44,7 @@ class KeycloakAdminTest {
 
     @BeforeEach
     void setUp() {
+        when(keycloak.realm(anyString())).thenReturn(realmResource);
         MockitoAnnotations.openMocks(this);
         userInfra = UserInfra.builder()
                 .username("testUser")
@@ -52,9 +54,8 @@ class KeycloakAdminTest {
     }
 
     @Test
-    @DisplayName("Should create a Keycloak User correctly")
+    @DisplayName("Create a Keycloak User correctly")
     void testCreateUser() {
-        when(keycloak.realm(anyString())).thenReturn(realmResource);
         when(realmResource.users()).thenReturn(usersResource);
         when(usersResource.create(any(UserRepresentation.class))).thenReturn(Response.status(201).build());
 
@@ -78,7 +79,6 @@ class KeycloakAdminTest {
     @Test
     @DisplayName("Should throw an exception when create user")
     void shouldThrowErrorWhenCreateUser() {
-        when(keycloak.realm(anyString())).thenReturn(realmResource);
         when(realmResource.users()).thenReturn(usersResource);
         var keycloakErrorMessage = new KeycloakErrorMessage("This is simulation of error");
         var response = Response.status(500).entity(keycloakErrorMessage).build();
@@ -90,5 +90,12 @@ class KeycloakAdminTest {
                 .assertFailedWith(new SecurityException(keycloakErrorMessage).getClass());
 
     }
+
+    @Test
+    @DisplayName("Update user groups")
+    void updateUserGroup() {
+//        realmResource.users().search()
+    }
+
 }
 

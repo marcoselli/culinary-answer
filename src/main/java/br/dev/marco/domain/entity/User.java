@@ -2,8 +2,8 @@ package br.dev.marco.domain.entity;
 
 import br.dev.marco.domain.exception.PasswordException;
 import br.dev.marco.domain.exception.UsernameException;
-import br.dev.marco.usecase.enuns.UserType;
-import br.dev.marco.usecase.exceptions.UserCreationException;
+import br.dev.marco.domain.usecase.enuns.UserType;
+import br.dev.marco.domain.usecase.exceptions.UserCreationException;
 
 public class User {
     private Username username;

@@ -1,6 +1,6 @@
 package br.dev.marco.handler;
 
-import br.dev.marco.usecase.exceptions.OpenAiException;
+import br.dev.marco.domain.usecase.exceptions.OpenAiException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

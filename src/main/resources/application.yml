@@ -13,12 +13,12 @@ quarkus:
         url: ${OTEL_COLLECTOR_URL:http://localhost}:4318/v1/metrics
 
   oidc:
-    auth-server-url: ${KEYCLOAK_URL:http://localhost}:8180/realms/culinary-answer
+    auth-server-url: ${KEYCLOAK_URL:http://localhost}:9090/realms/culinary-answer
     client-id: ${KEYCLOAK_CLIENT_ID:backend-service}
     secret: ${KEYCLOAK_SECRET:secret}
   keycloak:
     admin-client:
-      server-url: ${KEYCLOAK_URL:http://localhost}:8180
+      server-url: ${KEYCLOAK_URL:http://localhost}:9090
 
   log:
     console:
@@ -27,7 +27,11 @@ quarkus:
       "br.dev.marco":
         level: INFO
 
-#  jacoco:
+  rest-client:
+    keycloakAdmin:
+      url: http://localhost:9090
+
+#      jacoco:
 #    excludes:
 #      - "**/domain/exception/**"
 #      - "br.dev.marco.handler/*"
@@ -40,7 +44,19 @@ quarkus:
 #      - "**/usecase/enuns/*"
 #      - "**/usecase/exceptions/*"
 
-#Injetar TOKEN através do SecretsManager
-secret:
-  API_TOKEN: "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"
+secrets:
+  openAi: ${quarkus.profile}/open-ai/secrets
+  keycloak: ${quarkus.profile}/keycloak/secrets
+
+"%dev":
+  quarkus:
+    secretsmanager:
+      endpoint-override: http://localhost:4566
+      aws:
+        region: us-east-1
+        credentials:
+          type: static
+          static-provider:
+            access-key-id: teste
+            secret-access-key: teste
 

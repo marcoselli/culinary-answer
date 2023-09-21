@@ -1,8 +1,8 @@
 package br.dev.marco.handler;
 
-import br.dev.marco.infra.security.exceptions.SecurityException;
-import br.dev.marco.usecase.exceptions.OpenAiException;
-import br.dev.marco.usecase.exceptions.UnsupportedQuestionException;
+import br.dev.marco.infra.security.sso.exceptions.SecurityException;
+import br.dev.marco.domain.usecase.exceptions.OpenAiException;
+import br.dev.marco.domain.usecase.exceptions.UnsupportedQuestionException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;

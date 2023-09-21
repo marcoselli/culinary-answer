@@ -1,7 +1,7 @@
 package br.dev.marco.mapper;
 
 import br.dev.marco.domain.entity.User;
-import br.dev.marco.infra.security.request.UserInfra;
+import br.dev.marco.infra.security.sso.request.UserInfra;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped

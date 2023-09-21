@@ -1,38 +1,72 @@
-version: '3.3'
+version: '3.8'
 
 services:
-  keycloak-instance:
-    image: keycloak/keycloak:latest
-    command: ["start-dev"]
-    volumes:
-      - ../keycloak-config/keycloak-keystore.jks:/etc/keycloak-keystore.jks
+  postgres:
+    image: postgres:15
     environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: pdb
     ports:
-      - 8180:8080
-
-  jaeger-instance:
-    image: jaegertracing/all-in-one
+      - "5432:5432"
+  keycloak:
+    image: keycloak/keycloak:latest
+    command: ['start-dev']
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/pdb
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
     ports:
-      - 4317:4317 # OTLP gRPC receiver
-      - 16686:16686 # UI
-
-  prometheus-instance:
-    image: prom/prometheus:latest
-    volumes:
-      - ../prometheus-config/prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - 9090:9090
-
-  otel-collector:
-    image: otel/opentelemetry-collector:latest
-    command: [ "--config=/etc/otel-collector-config.yaml" ]
-    volumes:
-      - ../otel-config/config.yaml:/etc/otel-collector-config.yaml:Z
-    ports:
-      - 8899:8899 # Prometheus exporter metrics
-      - 4318:4318 # OTLP http receiver
+      - "9090:8080"
     depends_on:
-      - prometheus-instance
-      - jaeger-instance
+      - postgres
+
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566" # Edge port
+    environment:
+      - SERVICES=dynamodb,sqs,secretsmanager
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - PERSISTENCE=${PERSISTENCE- }
+      - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
+      - DOCKER_HOST=${DOCKER_LOCATION}
+      - AWS_ACCESS_KEY_ID=teste
+      - AWS_SECRET_ACCESS_KEY=teste
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_DEFAULT_OUTPUT=json
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "./notification.json:/opt/code/localstack/notification.json"
+      - "./init-aws.sh:/docker-entrypoint-initaws.d/init-aws.sh"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+#  jaeger-instance:
+#    image: jaegertracing/all-in-one
+#    ports:
+#      - 4317:4317 # OTLP gRPC receiver
+#      - 16686:16686 # UI
+#
+#  prometheus-instance:
+#    image: prom/prometheus:latest
+#    volumes:
+#      - ../prometheus-config/prometheus.yml:/etc/prometheus/prometheus.yml
+#    ports:
+#      - 9090:9090
+#
+#  otel-collector:
+#    image: otel/opentelemetry-collector:latest
+#    command: [ "--config=/etc/otel-collector-config.yaml" ]
+#    volumes:
+#      - ../otel-config/config.yaml:/etc/otel-collector-config.yaml:Z
+#    ports:
+#      - 8899:8899 # Prometheus exporter metrics
+#      - 4318:4318 # OTLP http receiver
+#    depends_on:
+#      - prometheus-instance
+#      - jaeger-instance

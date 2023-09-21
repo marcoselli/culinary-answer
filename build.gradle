@@ -12,6 +12,8 @@ repositories {
 }
 
 dependencies {
+
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:quarkus-amazon-services-bom:${quarkusPlatformVersion}")
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
 
     //OpenAI
@@ -21,6 +23,7 @@ dependencies {
     implementation("io.quarkus:quarkus-opentelemetry")
     implementation("io.opentelemetry:opentelemetry-extension-trace-propagators")
     implementation("io.quarkiverse.micrometer.registry:quarkus-micrometer-registry-otlp:3.1.2")
+    implementation("software.amazon.awssdk:url-connection-client")
 
     //Security
     implementation ("io.quarkus:quarkus-oidc")
@@ -30,8 +33,9 @@ dependencies {
     implementation("io.quarkus:quarkus-smallrye-openapi")
 
     //AWS
-//    implementation("io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced:2.5.0")
-//    implementation("software.amazon.awssdk:netty-nio-client")
+    implementation("io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced:2.5.0")
+    implementation("software.amazon.awssdk:netty-nio-client:2.20.150")
+    implementation("io.quarkiverse.amazonservices:quarkus-amazon-secretsmanager")
 
 
     implementation("io.quarkus:quarkus-hibernate-validator")

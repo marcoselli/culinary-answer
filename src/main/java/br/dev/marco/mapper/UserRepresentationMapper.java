@@ -1,6 +1,6 @@
 package br.dev.marco.mapper;
 
-import br.dev.marco.infra.security.request.UserInfra;
+import br.dev.marco.infra.security.sso.request.UserInfra;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.mapstruct.Mapper;

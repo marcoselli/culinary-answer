@@ -2,10 +2,13 @@ package br.dev.marco.domain.entity;
 
 import br.dev.marco.domain.exception.MessageException;
 import br.dev.marco.domain.exception.RandomnessException;
-import br.dev.marco.usecase.enuns.QuestionType;
+import br.dev.marco.domain.usecase.enuns.QuestionType;
+import br.dev.marco.domain.usecase.enuns.Topic;
 
 public class Question {
     private Message message;
+
+    private Topic topic;
     private Randomness randomness;
 
     public Question(String message, Double randomness) throws MessageException, RandomnessException {

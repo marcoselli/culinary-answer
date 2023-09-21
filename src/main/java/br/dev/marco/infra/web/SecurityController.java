@@ -3,48 +3,76 @@ package br.dev.marco.infra.web;
 import br.dev.marco.domain.entity.User;
 import br.dev.marco.domain.exception.PasswordException;
 import br.dev.marco.domain.exception.UsernameException;
+import br.dev.marco.infra.client.KeycloakAdminClient;
+import br.dev.marco.infra.security.vault.exceptions.CredentialException;
 import br.dev.marco.infra.web.request.CreateUserRequest;
+import br.dev.marco.infra.web.request.LoginRequest;
+import br.dev.marco.infra.web.response.TokenResponse;
 import br.dev.marco.mapper.UserAdapter;
-import br.dev.marco.usecase.Command;
-import br.dev.marco.usecase.exceptions.UserCreationException;
+import br.dev.marco.domain.usecase.Command;
+import br.dev.marco.domain.usecase.exceptions.UserCreationException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.smallrye.common.annotation.Blocking;
 import io.smallrye.mutiny.Uni;
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.rmi.NoSuchObjectException;
 
+
 @ApplicationScoped
-@Path("/api/admin")
+@Path("/v1/auth")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class SecurityController {
+@Blocking
+public class SecurityController{
 
     private final Logger LOGGER = LoggerFactory.getLogger(SecurityController.class);
     private final Command<User,Void> createUser;
+
+    private final Command<LoginRequest,TokenResponse> generateToken;
     private final UserAdapter userAdapter;
 
+    private final KeycloakAdminClient keycloakAdminClient;
     @Inject
-    public SecurityController(@Named("createUser") Command<User, Void> createUser, UserAdapter userAdapter) {
+    public SecurityController(@Named("createUser") Command<User, Void> createUser,
+                              @Named("generateToken") Command<LoginRequest, TokenResponse> generateToken,
+                              UserAdapter userAdapter,
+                              @RestClient KeycloakAdminClient keycloakAdminClient) {
         this.createUser = createUser;
+        this.generateToken = generateToken;
         this.userAdapter = userAdapter;
+        this.keycloakAdminClient = keycloakAdminClient;
     }
 
+    @GET
+    @Path("/token")
+    @PermitAll
+    @Operation(description = "Return user token after successful login")
+    @APIResponse(
+            responseCode = "200",
+            description = "Token returned successfully"
+    )
+    @APIResponse(responseCode = "400", description = "Failed to login")
+    @APIResponse(responseCode = "500", description = "Some unexpected error occurred")
+    public Uni<Response> retrieveToken(LoginRequest loginRequest) throws CredentialException, NoSuchObjectException, NoSuchFieldException {
+        return generateToken.execute(loginRequest)
+                .map(response -> Response.ok(response).build());
+    }
+    
     @POST
     @Path("/user/{userType}")
     @RolesAllowed("admin")
@@ -55,10 +83,23 @@ public class SecurityController {
     )
     @APIResponse(responseCode = "400", description = "Bad request")
     @APIResponse(responseCode = "500", description = "Some unexpected error occurred")
-    @Blocking
     public Uni<Response> add(@NotNull @Valid CreateUserRequest createUserRequest, String userType)
-            throws PasswordException, UsernameException, UserCreationException, NoSuchObjectException, NoSuchFieldException {
+            throws PasswordException, UsernameException, UserCreationException, NoSuchObjectException, NoSuchFieldException, CredentialException {
         return createUser.execute(userAdapter.from(createUserRequest, userType))
                 .map(response -> Response.status(HttpResponseStatus.CREATED.code()).build());
     }
+
+//    @GET
+//    @RolesAllowed("admin")
+//    public Uni<Response>  updateUserGroups() {
+////        LOGGER.info("Username: {} - Updating Keycloak user groups");
+//        return Uni.createFrom().item(keycloak.realm("culinary-answer"))
+//                .map(realm -> realm.users().search("teste").stream().findFirst().orElseThrow(() -> new NoSuchElementException("")))
+//                .map(user -> {
+//                    user.setGroups(List.of("simple-user"));
+//                    return user;
+//                })
+//                .map(res -> Response.status(200).entity(res).build());
+//    }
+
 }
