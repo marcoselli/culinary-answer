@@ -1,14 +1,14 @@
 package br.dev.marco.domain.entity;
 
-import br.dev.marco.domain.exception.PasswordException;
-import br.dev.marco.domain.exception.UsernameException;
+import br.dev.marco.domain.exceptions.PasswordException;
+import br.dev.marco.domain.exceptions.UsernameException;
 import br.dev.marco.domain.usecase.enuns.UserType;
 import br.dev.marco.domain.usecase.exceptions.UserCreationException;
 
 public class User {
     private Username username;
     private Password password;
-    private String role;
+    private UserType userType;
     public User(String username, String password, String userType) throws PasswordException, UsernameException, UserCreationException {
         this.username = new Username(username);
         this.password = new Password(password);
@@ -20,8 +20,8 @@ public class User {
     }
 
     private void assignRole(String userType) throws UserCreationException {
-        if(userType.equals(UserType.FREE.getRoleName())) this.role = UserType.FREE.getRoleName();
-        else if (userType.equals(UserType.MEMBER.getRoleName())) this.role = UserType.MEMBER.getRoleName();
+        if(userType.equals(UserType.FREE.getType())) this.userType = UserType.FREE;
+        else if (userType.equals(UserType.MEMBER.getType())) this.userType = UserType.MEMBER;
         else throw new UserCreationException("Invalid user type");
     }
 
@@ -33,11 +33,11 @@ public class User {
         return password;
     }
 
-    public String getRole() {
-        return role;
+    public UserType getUserType() {
+        return userType;
     }
 
-//    public void assignFreeUser() {
+    //    public void assignFreeUser() {
 //        this.role = UserType.FREE.getRoleName();
 //    }
 //

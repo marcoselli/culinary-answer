@@ -27,7 +27,7 @@ public interface UserRepresentationMapper {
 
     @Named(value = "realmRolesMapper")
     default List<String> toGroups(UserInfra userInfra) {
-        return List.of(userInfra.getRole());
+        return List.of(userInfra.getGroup());
     }
 
 }

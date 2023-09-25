@@ -59,4 +59,13 @@ secrets:
           static-provider:
             access-key-id: teste
             secret-access-key: teste
+    dynamodb:
+      endpoint-override: http://localhost:4566
+      aws:
+        region: us-east-1
+        credentials:
+          type: static
+          static-provider:
+            access-key-id: teste
+            secret-access-key: teste
 

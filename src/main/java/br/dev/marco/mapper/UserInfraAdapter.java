@@ -10,7 +10,7 @@ public class UserInfraAdapter {
         return UserInfra.builder()
                 .username(user.getUsername().getValue())
                 .password(user.getPassword().getValue())
-                .role(user.getRole())
+                .group(user.getUserType().getGroupName())
                 .build();
     }
 }

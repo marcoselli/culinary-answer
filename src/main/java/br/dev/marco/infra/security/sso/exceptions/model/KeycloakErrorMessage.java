@@ -11,4 +11,5 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class KeycloakErrorMessage {
     private String errorMessage;
+    private String error;
 }

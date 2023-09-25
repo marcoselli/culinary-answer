@@ -1,7 +1,6 @@
 package br.dev.marco.domain.entity;
 
-import br.dev.marco.domain.entity.Username;
-import br.dev.marco.domain.exception.UsernameException;
+import br.dev.marco.domain.exceptions.UsernameException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

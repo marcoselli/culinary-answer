@@ -1,9 +1,9 @@
 package br.dev.marco.infra.web;
 
 import br.dev.marco.domain.entity.User;
-import br.dev.marco.domain.exception.PasswordException;
-import br.dev.marco.domain.exception.UsernameException;
-import br.dev.marco.infra.client.KeycloakAdminClient;
+import br.dev.marco.domain.exceptions.PasswordException;
+import br.dev.marco.domain.exceptions.UsernameException;
+import br.dev.marco.domain.usecase.impl.CreateUser;
 import br.dev.marco.infra.security.vault.exceptions.CredentialException;
 import br.dev.marco.infra.web.request.CreateUserRequest;
 import br.dev.marco.infra.web.request.LoginRequest;
@@ -25,7 +25,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,28 +33,25 @@ import java.rmi.NoSuchObjectException;
 
 
 @ApplicationScoped
-@Path("/v1/auth")
+@Path("/v1/sso")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Blocking
 public class SecurityController{
 
     private final Logger LOGGER = LoggerFactory.getLogger(SecurityController.class);
-    private final Command<User,Void> createUser;
+    private final CreateUser createUser;
 
     private final Command<LoginRequest,TokenResponse> generateToken;
     private final UserAdapter userAdapter;
 
-    private final KeycloakAdminClient keycloakAdminClient;
     @Inject
-    public SecurityController(@Named("createUser") Command<User, Void> createUser,
+    public SecurityController(@Named("createUser") CreateUser createUser,
                               @Named("generateToken") Command<LoginRequest, TokenResponse> generateToken,
-                              UserAdapter userAdapter,
-                              @RestClient KeycloakAdminClient keycloakAdminClient) {
+                              UserAdapter userAdapter) {
         this.createUser = createUser;
         this.generateToken = generateToken;
         this.userAdapter = userAdapter;
-        this.keycloakAdminClient = keycloakAdminClient;
     }
 
     @GET

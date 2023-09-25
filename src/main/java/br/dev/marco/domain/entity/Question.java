@@ -1,9 +1,10 @@
 package br.dev.marco.domain.entity;
 
-import br.dev.marco.domain.exception.MessageException;
-import br.dev.marco.domain.exception.RandomnessException;
+import br.dev.marco.domain.exceptions.MessageException;
+import br.dev.marco.domain.exceptions.RandomnessException;
 import br.dev.marco.domain.usecase.enuns.QuestionType;
 import br.dev.marco.domain.usecase.enuns.Topic;
+import lombok.SneakyThrows;
 
 public class Question {
     private Message message;
@@ -11,7 +12,11 @@ public class Question {
     private Topic topic;
     private Randomness randomness;
 
-    public Question(String message, Double randomness) throws MessageException, RandomnessException {
+    private UserDetail requester;
+    @SneakyThrows
+    public Question(String message, Double randomness, UserDetail requester) throws MessageException, RandomnessException {
+        this.requester = requester;
+        this.topic = Topic.GENERAL;
         this.message = new Message(message);
         this.randomness = new Randomness(randomness);
     }
@@ -31,5 +36,9 @@ public class Question {
 
     public Randomness getRandomness() {
         return this.randomness;
+    }
+
+    public UserDetail getRequester() {
+        return requester;
     }
 }

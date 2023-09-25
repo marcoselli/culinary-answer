@@ -5,6 +5,7 @@ import lombok.*;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionAnswered {
+public class QuestionAnsweredORM {
     @Getter(onMethod = @__({@DynamoDbAttribute("questionId"), @DynamoDbPartitionKey}))
     private UUID questionId;
     private Topic topic;
@@ -22,6 +23,7 @@ public class QuestionAnswered {
     private String question;
     private String answer;
     private LocalDateTime answerCreatedAt;
+    @Getter(onMethod = @__({@DynamoDbAttribute("requesterId"), @DynamoDbSecondaryPartitionKey(indexNames = "requesterId-index")}))
     private UUID requesterId;
     private Boolean isPersistent;
 
@@ -31,8 +33,8 @@ public class QuestionAnswered {
                 "questionId=" + questionId +
                 ", topic=" + topic +
                 ", tittle='" + tittle + '\'' +
-                ", question='" + question + '\'' +
-                ", answer='" + answer + '\'' +
+                ", question='" + question.substring(0,10) + '\'' +
+                ", answer='" + answer.substring(0,10) + '\'' +
                 ", answerCreatedAt=" + answerCreatedAt +
                 ", requesterId=" + requesterId +
                 ", isPersistent=" + isPersistent +
