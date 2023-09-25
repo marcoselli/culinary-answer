@@ -14,6 +14,7 @@ import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 @Named("generateToken")
-public class GenerateToken implements Command<LoginRequest,TokenResponse> {
+public class GenerateToken implements Command<LoginRequest,TokenResponse>{
 
     private final Logger LOGGER = LoggerFactory.getLogger(GenerateToken.class);
 

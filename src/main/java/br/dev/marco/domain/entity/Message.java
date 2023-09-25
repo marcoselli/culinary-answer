@@ -1,6 +1,7 @@
 package br.dev.marco.domain.entity;
 
-import br.dev.marco.domain.exception.MessageException;
+import br.dev.marco.domain.exceptions.MessageException;
+import lombok.SneakyThrows;
 
 import java.util.Objects;
 
@@ -9,8 +10,8 @@ public class Message {
     private final Integer MAXIMUM_MESSAGE_LENGHT = 280;
 
     private String value;
-
-    public Message(String message) throws MessageException {
+    @SneakyThrows
+    public Message(String message) {
         validate(message);
         this.value = message;
     }

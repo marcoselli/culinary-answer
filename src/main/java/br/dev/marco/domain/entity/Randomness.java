@@ -1,12 +1,14 @@
 package br.dev.marco.domain.entity;
 
-import br.dev.marco.domain.exception.RandomnessException;
+import br.dev.marco.domain.exceptions.RandomnessException;
+import lombok.SneakyThrows;
 
 import java.util.Objects;
 
 public class Randomness {
 
     private Double value;
+    @SneakyThrows
     public Randomness(Double randomness) throws RandomnessException {
         validate(randomness);
         this.value = Objects.isNull(randomness) ? 0 : randomness;

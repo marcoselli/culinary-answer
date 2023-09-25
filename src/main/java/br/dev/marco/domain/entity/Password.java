@@ -1,6 +1,6 @@
 package br.dev.marco.domain.entity;
 
-import br.dev.marco.domain.exception.PasswordException;
+import br.dev.marco.domain.exceptions.PasswordException;
 
 import java.util.regex.Pattern;
 

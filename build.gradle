@@ -20,10 +20,9 @@ dependencies {
     implementation("com.theokanning.openai-gpt3-java:service:0.15.0")
 
     //Monitoring and Observability
-    implementation("io.quarkus:quarkus-opentelemetry")
-    implementation("io.opentelemetry:opentelemetry-extension-trace-propagators")
-    implementation("io.quarkiverse.micrometer.registry:quarkus-micrometer-registry-otlp:3.1.2")
-    implementation("software.amazon.awssdk:url-connection-client")
+//    implementation("io.quarkus:quarkus-opentelemetry")
+//    implementation("io.opentelemetry:opentelemetry-extension-trace-propagators")
+//    implementation("io.quarkiverse.micrometer.registry:quarkus-micrometer-registry-otlp:3.1.2")
 
     //Security
     implementation ("io.quarkus:quarkus-oidc")
@@ -36,6 +35,8 @@ dependencies {
     implementation("io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced:2.5.0")
     implementation("software.amazon.awssdk:netty-nio-client:2.20.150")
     implementation("io.quarkiverse.amazonservices:quarkus-amazon-secretsmanager")
+    implementation("software.amazon.awssdk:url-connection-client")
+
 
 
     implementation("io.quarkus:quarkus-hibernate-validator")

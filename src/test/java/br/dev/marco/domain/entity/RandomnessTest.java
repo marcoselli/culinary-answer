@@ -1,6 +1,6 @@
 package br.dev.marco.domain.entity;
 
-import br.dev.marco.domain.exception.RandomnessException;
+import br.dev.marco.domain.exceptions.RandomnessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

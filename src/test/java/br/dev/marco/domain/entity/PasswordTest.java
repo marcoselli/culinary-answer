@@ -1,7 +1,6 @@
 package br.dev.marco.domain.entity;
 
-import br.dev.marco.domain.entity.Password;
-import br.dev.marco.domain.exception.PasswordException;
+import br.dev.marco.domain.exceptions.PasswordException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
