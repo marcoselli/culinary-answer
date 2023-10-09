@@ -34,7 +34,7 @@ public class GetLatestQuestions {
     public Uni<List<QuestionAnsweredResponse>> execute(String username) {
         LOGGER.info("Username: {} - Starting getting latest questions", username);
         return userDetailRepository.getByUsername(username)
-                .flatMap(userDetailORM -> culinaryTopicsRepository.getQuestionByRequesterId(userDetailORM.getUserDetailId().toString()))
+                .flatMap(userDetailORM -> culinaryTopicsRepository.getQuestionsByRequesterId(userDetailORM.getUserDetailId().toString()))
                 .map(questionsAnswered -> questionsAnswered.stream()
                         .sorted(Comparator.comparing(QuestionAnsweredORM::getAnswerCreatedAt).reversed())
                         .map(questionAnsweredResponseMapper::from)

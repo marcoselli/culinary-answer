@@ -1,6 +1,7 @@
 package br.dev.marco.mapper;
 
 import br.dev.marco.domain.entity.Question;
+import br.dev.marco.domain.entity.QuestionAnswered;
 import br.dev.marco.domain.usecase.enuns.Topic;
 import br.dev.marco.infra.repository.orm.QuestionAnsweredORM;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -19,7 +20,20 @@ public class QuestionAnsweredORMAdapter {
                 .answer(answer)
                 .answerCreatedAt(LocalDateTime.now())
                 .requesterId(UUID.fromString(question.getRequester().getUserDetailId()))
-                .isPersistent(Boolean.FALSE)
+                .isFavorite(Boolean.FALSE)
+                .build();
+    }
+
+    public QuestionAnsweredORM from(QuestionAnswered questionAnswered) {
+        return QuestionAnsweredORM.builder()
+                .questionId(UUID.fromString(questionAnswered.getQuestionId()))
+                .topic(questionAnswered.getTopic())
+                .tittle(questionAnswered.getTittle())
+                .question(questionAnswered.getQuestion())
+                .answer(questionAnswered.getAnswer())
+                .answerCreatedAt(questionAnswered.getAnswerCreatedAt())
+                .isFavorite(questionAnswered.getIsFavorite())
+                .requesterId(UUID.fromString(questionAnswered.getRequesterId()))
                 .build();
     }
 }

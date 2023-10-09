@@ -25,7 +25,7 @@ public class QuestionAnsweredORM {
     private LocalDateTime answerCreatedAt;
     @Getter(onMethod = @__({@DynamoDbAttribute("requesterId"), @DynamoDbSecondaryPartitionKey(indexNames = "requesterId-index")}))
     private UUID requesterId;
-    private Boolean isPersistent;
+    private Boolean isFavorite;
 
     @Override
     public String toString() {
@@ -37,7 +37,7 @@ public class QuestionAnsweredORM {
                 ", answer='" + answer.substring(0,10) + '\'' +
                 ", answerCreatedAt=" + answerCreatedAt +
                 ", requesterId=" + requesterId +
-                ", isPersistent=" + isPersistent +
+                ", isPersistent=" + isFavorite +
                 '}';
     }
 }

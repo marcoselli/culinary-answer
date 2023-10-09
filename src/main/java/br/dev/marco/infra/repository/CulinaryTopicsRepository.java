@@ -7,6 +7,9 @@ import java.util.List;
 
 public interface CulinaryTopicsRepository {
     Uni<Void> add(QuestionAnsweredORM questionAnsweredORM);
+    Uni<Void> update(QuestionAnsweredORM questionAnsweredORM);
+    Uni<QuestionAnsweredORM> getById(String questionId);
+    Uni<List<QuestionAnsweredORM>> getQuestionsByRequesterId(String requesterId);
+    Uni<List<QuestionAnsweredORM>> getUserFavoritesQuestions(String requesterId);
 
-    Uni<List<QuestionAnsweredORM>> getQuestionByRequesterId(String username);
 }
