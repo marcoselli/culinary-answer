@@ -5,20 +5,20 @@ quarkus:
   devservices:
     enabled: false
 
-  micrometer:
-    export:
-      otlp:
-        publish: true
-        default-registry: true
-        url: ${OTEL_COLLECTOR_URL:http://localhost}:4318/v1/metrics
+#  micrometer:
+#    export:
+#      otlp:
+#        publish: true
+#        default-registry: true
+#        url: ${OTEL_COLLECTOR_URL:http://localhost}:4318/v1/metrics
 
   oidc:
-    auth-server-url: ${KEYCLOAK_URL:http://localhost}:9090/realms/culinary-answer
+    auth-server-url: ${KEYCLOAK_URL:http://localhost:8080}/realms/culinary-answer
     client-id: ${KEYCLOAK_CLIENT_ID:backend-service}
     secret: ${KEYCLOAK_SECRET:secret}
   keycloak:
     admin-client:
-      server-url: ${KEYCLOAK_URL:http://localhost}:9090
+      server-url: ${KEYCLOAK_URL:http://localhost:8080}
 
   log:
     console:
@@ -29,7 +29,9 @@ quarkus:
 
   rest-client:
     keycloakAdmin:
-      url: http://localhost:9090
+      url: ${KEYCLOAK_URL:http://localhost:8080}
+  http:
+    port: 8081
 
 #      jacoco:
 #    excludes:
@@ -51,7 +53,7 @@ secrets:
 "%dev":
   quarkus:
     secretsmanager:
-      endpoint-override: http://localhost:4566
+      endpoint-override: http://localstack:4566
       aws:
         region: us-east-1
         credentials:
@@ -60,7 +62,7 @@ secrets:
             access-key-id: teste
             secret-access-key: teste
     dynamodb:
-      endpoint-override: http://localhost:4566
+      endpoint-override: http://localstack:4566
       aws:
         region: us-east-1
         credentials:
