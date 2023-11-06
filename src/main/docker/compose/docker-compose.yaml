@@ -1,28 +1,35 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15
-    environment:
-      POSTGRES_PASSWORD: admin
-      POSTGRES_USER: admin
-      POSTGRES_DB: pdb
-    ports:
-      - "5432:5432"
+#  postgres:
+#    image: postgres:15
+#    environment:
+#      POSTGRES_PASSWORD: admin
+#      POSTGRES_USER: admin
+#      POSTGRES_DB: pdb
+#    ports:
+#      - "5432:5432"
   keycloak:
     image: keycloak/keycloak:latest
     command: ['start-dev']
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres/pdb
-      KC_DB_USERNAME: admin
-      KC_DB_PASSWORD: admin
+#      KC_DB: postgres
+#      KC_DB_URL: jdbc:postgresql://postgres/pdb
+#      KC_DB_USERNAME: admin
+#      KC_DB_PASSWORD: admin
     ports:
-      - "9090:8080"
-    depends_on:
-      - postgres
+      - "8080:8080"
+    healthcheck:
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080;echo -e \"GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n\" >&3;grep \"HTTP/1.1 200 OK\" <&3" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+#    depends_on:
+#      - postgres
 
   localstack:
     container_name: localstack
@@ -40,11 +47,33 @@ services:
       - AWS_SECRET_ACCESS_KEY=teste
       - AWS_DEFAULT_REGION=us-east-1
       - AWS_DEFAULT_OUTPUT=json
+    networks:
+      - app-network
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "./notification.json:/opt/code/localstack/notification.json"
       - "./init-aws.sh:/docker-entrypoint-initaws.d/init-aws.sh"
       - "/var/run/docker.sock:/var/run/docker.sock"
+
+  app:
+    container_name: culinary-answer
+    image: devmarco/culinary-answer:v1.0
+    environment:
+      KEYCLOAK_URL: http://keycloak:8080
+    networks:
+      - app-network
+    ports:
+      - "8081:8081"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      localstack:
+        condition: service_started
+
+networks:
+  app-network:
+    driver: bridge
+
 
 #  jaeger-instance:
 #    image: jaegertracing/all-in-one

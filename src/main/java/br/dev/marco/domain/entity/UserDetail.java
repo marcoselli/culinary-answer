@@ -4,6 +4,7 @@ package br.dev.marco.domain.entity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 public class UserDetail {
@@ -16,7 +17,7 @@ public class UserDetail {
 
     public Boolean isMember() {
         var now = LocalDateTime.now();
-        return this.memberExpirationDate.isAfter(now);
+        return Objects.isNull(this.memberExpirationDate) ? Boolean.FALSE : this.memberExpirationDate.isAfter(now);
     }
 
     public void refreshMemberPlan() {
