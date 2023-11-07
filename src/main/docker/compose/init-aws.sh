@@ -8,7 +8,7 @@ awslocal dynamodb create-table --table-name questionAnsweredTable --attribute-de
 awslocal dynamodb update-table --table-name questionAnsweredTable --attribute-definitions AttributeName=requesterId,AttributeType=S --global-secondary-index-updates "[{\"Create\":{\"IndexName\":\"requesterId-index\",\"KeySchema\":[{\"AttributeName\":\"requesterId\",\"KeyType\":\"HASH\"}],\"ProvisionedThroughput\":{\"ReadCapacityUnits\": 5,\"WriteCapacityUnits\": 5},\"Projection\":{\"ProjectionType\":\"ALL\"}}}]"
 
 ### SECRETS MANAGER ####
-awslocal secretsmanager create-secret --name dev/open-ai/secrets --secret-string '{ "apiToken": "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",
+awslocal secretsmanager create-secret --name dev/open-ai/secrets --secret-string '{ "apiToken": "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",
                                                                                     "maxTokens": 2048,
                                                                                     "modelType": "text-davinci-003"
                                                                                   }'
